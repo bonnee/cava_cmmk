@@ -5,7 +5,7 @@ CFLAGS=-I$(IDIR)
 ODIR=obj
 LDIR =/usr/lib
 
-LIBS=-lcmmk -lusb
+LIBS=-lcmmk -lusb -lm
 
 _DEPS = keeb.h
 DEPS = $(patsubst %,$(IDIR)/%,$(_DEPS))

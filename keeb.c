@@ -1,5 +1,7 @@
 #include "keeb.h"
 
+#include <math.h>
+
 struct rgb offcolor = MKRGB(0x000000);
 struct rgb oncolor = MKRGB(0xff0000);
 
@@ -26,7 +28,7 @@ int keeb_print(unsigned char values[CMMK_COLS_MAX]) {
 
 	for (int row = 0; row < CMMK_ROWS_MAX; ++row) {
 		for (int col = 0; col < CMMK_COLS_MAX; ++col) {
-			int to_fill = CMMK_ROWS_MAX - (float)(CMMK_ROWS_MAX * values[col]) / 255;
+			int to_fill = CMMK_ROWS_MAX - round((CMMK_ROWS_MAX * values[col]) / 255.0);
 			if (to_fill > row) {
 				mat.data[row][col] = offcolor;
 			} else {
