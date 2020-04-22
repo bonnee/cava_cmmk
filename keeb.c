@@ -2,10 +2,13 @@
 
 #include <math.h>
 
-#define HEIGHT 6
+//#define DEBUG
 
-struct rgb offcolor = MKRGB(0x000000);
-struct rgb oncolor = MKRGB(0xff0000);
+#ifdef DEBUG
+#include <stdio.h>
+#endif
+
+#define KEEB_HEIGHT 6
 
 struct cmmk dev;
 
@@ -28,15 +31,18 @@ int keeb_init() {
 int keeb_print(unsigned char values[CMMK_COLS_MAX]) {
 	struct cmmk_color_matrix mat;
 
-	for (int row = 0; row < HEIGHT; ++row) {
+	for (int row = 0; row < KEEB_HEIGHT; ++row) {
 		for (int col = 0; col < CMMK_COLS_MAX; ++col) {
-			int to_fill = HEIGHT - round((HEIGHT * values[col]) / 255.0);
-			if (to_fill > row) {
-				mat.data[row][col] = offcolor;
-			} else {
-				mat.data[row][col] = oncolor;
-			}
+			float grad = KEEB_HEIGHT - (KEEB_HEIGHT * values[col]) / 255.0F;
+
+			mat.data[row][col] = MKRGBS(fmin(255U, fmax(0, 255U - ((grad - row) * 255U))), 0xFF, 0xFF);
+#ifdef DEBUG
+			printf("%.2f\t", grad);
+#endif
 		}
+#ifdef DEBUG
+		printf("\n");
+#endif
 	}
 
 	return cmmk_set_leds(&dev, &mat);
