@@ -10,22 +10,25 @@
 #define CAVA_CMD "cava -p "
 #define BAR_N 22
 
-int g_stop = 0;
+int end = 0;
 
-static void interrupted(int sig) {
-	(void)sig;
-
-	g_stop = 1;
+static void quit(int sig, siginfo_t *siginfo, void *context) {
+	end = 1;
 }
 
 int main(int argc, char *argv[]) {
+	struct sigaction act;
+	act.sa_flags = SA_SIGINFO;
+	act.sa_sigaction = quit;
+	sigaction(SIGINT, &act, 0);
+	sigaction(SIGHUP, &act, 0);
+	sigaction(SIGTERM, &act, 0);
+
 	if (argc != 2) {
 		printf("usage %s <cava_config>\n", argv[0]);
 
 		exit(EXIT_FAILURE);
 	}
-
-	signal(SIGINT, interrupted);
 
 	// Run cava
 	char cava_cmd[255];
@@ -46,7 +49,7 @@ int main(int argc, char *argv[]) {
 		exit(EXIT_FAILURE);
 	}
 
-	while (!feof(stream) && !g_stop) {
+	while (!feof(stream) && !end) {
 		unsigned char c[BAR_N] = {'\0'};
 		fread(c, 1, BAR_N, stream);
 
