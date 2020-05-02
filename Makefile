@@ -33,7 +33,7 @@ $(TARGET): $(OBJ)
 
 install: $(TARGET)
 	install -d $(DESTDIR)$(PREFIX)/bin/
-	install -m 755 cava_cmmk $(DESTDIR)$(PREFIX)/bin/
+	install -m 755 $(BINDIR)/cava_cmmk $(DESTDIR)$(PREFIX)/bin/
 
 .PHONY: all
 all: $(TARGET)
