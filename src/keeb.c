@@ -9,6 +9,7 @@
 #endif
 
 #define KEEB_HEIGHT 6
+const struct rgb offcolor = MKRGB(0x000000);
 
 struct cmmk dev;
 
@@ -25,14 +26,15 @@ int keeb_init() {
 		return 1;
 	}
 
-	return cmmk_set_control_mode(&dev, CMMK_MANUAL);
+	cmmk_set_control_mode(&dev, CMMK_MANUAL);
+	return cmmk_set_all_single(&dev, &offcolor);
 }
 
-int keeb_print(unsigned char values[CMMK_COLS_MAX]) {
+int keeb_print(unsigned char values[CMMK_COLS_MAX], size_t size) {
 	struct cmmk_color_matrix mat;
 
 	for (int row = 0; row < KEEB_HEIGHT; ++row) {
-		for (int col = 0; col < CMMK_COLS_MAX; ++col) {
+		for (int col = 0; col < size; ++col) {
 			float grad = KEEB_HEIGHT - (KEEB_HEIGHT * values[col]) / 255.0F;
 
 			mat.data[row][col] = MKRGBS(fmin(255U, fmax(0, 255U - ((grad - row) * 255U))), 0xFF, 0xFF);
