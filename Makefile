@@ -18,7 +18,7 @@ _OBJ := cava_cmmk.o keeb.o
 OBJ := $(patsubst %,$(OBJDIR)/%,$(_OBJ))
 
 ifeq ($(PREFIX),)
-    PREFIX := /usr/local
+    PREFIX := /usr
 endif
 
 default: all
