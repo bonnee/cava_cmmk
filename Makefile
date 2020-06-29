@@ -9,7 +9,7 @@ CC := gcc
 CFLAGS := -I$(SRCDIR)
 
 LDIR := /usr/lib
-LIBS := -lcmmk -lusb -lm
+LIBS := -lcmmk -lusb -lm -lhidapi-libusb
 
 _DEPS := keeb.h
 DEPS := $(patsubst %,$(SRCDIR)/%,$(_DEPS))

@@ -14,8 +14,6 @@ const struct rgb offcolor = MKRGB(0x000000);
 struct cmmk dev;
 
 int keeb_init() {
-	dev.cxt = NULL;
-
 	int product;
 
 	if (cmmk_find_device(&product) != 0) {
